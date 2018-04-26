@@ -12,6 +12,7 @@ const normalizeLines = (lines) => {
     if (line.length === 1) continue;
     if (line === os.EOL) continue;
     if (line === '\\r\\n') continue;
+    if (line === ' ') continue;
 
     output.push(line);
   }
