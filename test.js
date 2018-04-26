@@ -1,9 +1,41 @@
-/* eslint-disable padded-blocks */
+/* eslint-disable padded-blocks,no-restricted-syntax */
 
 const os = require('os');
 const { stdout } = require('test-console');
 const chai = require('chai');
 const stdin = require('mock-stdin').stdin();
+
+// For some strange reason the stdout buffer prints each char in a line using mock-stdin.
+const normalizeLines = (lines) => {
+  let waitForEOL = false;
+  let temp = [];
+  const output = [];
+
+  for (const line of lines) {
+    if (waitForEOL) {
+      if (line === os.EOL) {
+        waitForEOL = false;
+      }
+      continue;
+    }
+
+    if (line === os.EOL) continue;
+
+    if (temp.length) {
+      output.push(temp.join(''));
+      temp = [];
+    }
+
+    if (line.length === 1) {
+      waitForEOL = true;
+      continue;
+    }
+
+    output.push(line);
+  }
+
+  return output;
+};
 
 const delay = millis => new Promise((resolve) => {
   setTimeout(resolve, millis);
@@ -52,18 +84,20 @@ describe('node-texas-holdem', () => {
 
     inspect.restore();
 
-    inspect.output.should.be.an('array').to.have.lengthOf(11);
-    inspect.output[0].should.be.a('string').equals(`Insert community cards:${os.EOL}`);
-    inspect.output[1].should.be.a('string').equals(`Insert hand for player 1:${os.EOL}`);
-    inspect.output[2].should.be.a('string').equals(`Insert hand for player 2:${os.EOL}`);
-    inspect.output[3].should.be.a('string').equals(`Insert hand for player 3:${os.EOL}`);
-    inspect.output[4].should.be.a('string').equals(`Do you want to add another player? (Y/n)${os.EOL}`);
-    inspect.output[5].should.be.a('string').equals(`Insert hand for player 4:${os.EOL}`);
-    inspect.output[6].should.be.a('string').equals(`Do you want to add another player? (Y/n)${os.EOL}`);
-    inspect.output[7].should.be.a('string').equals(`1: Sam Two Pairs Ace of Clubs, King of Hearts, 3 of Hearts${os.EOL}`);
-    inspect.output[8].should.be.a('string').equals(`2: Rodrigo Two Pairs Ace of Spades, King of Clubs, 3 of Hearts${os.EOL}`);
-    inspect.output[9].should.be.a('string').equals(`3: John Pair King of Spades, 10 of Diamonds, 9 of Hearts${os.EOL}`);
-    inspect.output[10].should.be.a('string').equals(`4: Becky High Card ${os.EOL}`);
+    const output = normalizeLines(inspect.output);
+
+    output.should.be.an('array').to.have.lengthOf(11);
+    output[0].should.be.a('string').equals(`Insert community cards:${os.EOL}`);
+    output[1].should.be.a('string').equals(`Insert hand for player 1:${os.EOL}`);
+    output[2].should.be.a('string').equals(`Insert hand for player 2:${os.EOL}`);
+    output[3].should.be.a('string').equals(`Insert hand for player 3:${os.EOL}`);
+    output[4].should.be.a('string').equals(`Do you want to add another player? (Y/n)${os.EOL}`);
+    output[5].should.be.a('string').equals(`Insert hand for player 4:${os.EOL}`);
+    output[6].should.be.a('string').equals(`Do you want to add another player? (Y/n)${os.EOL}`);
+    output[7].should.be.a('string').equals(`1: Sam Two Pairs Ace of Clubs, King of Hearts, 3 of Hearts${os.EOL}`);
+    output[8].should.be.a('string').equals(`2: Rodrigo Two Pairs Ace of Spades, King of Clubs, 3 of Hearts${os.EOL}`);
+    output[9].should.be.a('string').equals(`3: John Pair King of Spades, 10 of Diamonds, 9 of Hearts${os.EOL}`);
+    output[10].should.be.a('string').equals(`4: Becky High Card ${os.EOL}`);
   });
 
 });
