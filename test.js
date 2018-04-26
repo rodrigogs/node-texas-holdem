@@ -11,8 +11,7 @@ const normalizeLines = (lines) => {
   for (const line of lines) {
     if (line.length === 1) continue;
     if (line === os.EOL) continue;
-    if (line === '\\r\\n') continue;
-    if (line === ' ') continue;
+    if (line === '\r\n') continue;
 
     output.push(line);
   }
@@ -68,8 +67,6 @@ describe('node-texas-holdem', () => {
     inspect.restore();
 
     const output = normalizeLines(inspect.output);
-
-    console.log(output);
 
     output.should.be.an('array').to.have.lengthOf(11);
     output[0].should.be.a('string').equals(`Insert community cards:${os.EOL}`);
