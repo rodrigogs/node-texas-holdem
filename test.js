@@ -11,6 +11,7 @@ const normalizeLines = (lines) => {
   for (const line of lines) {
     if (line.length === 1) continue;
     if (line === os.EOL) continue;
+    if (line === '\\r\\n') continue;
 
     output.push(line);
   }
