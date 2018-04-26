@@ -5,31 +5,12 @@ const { stdout } = require('test-console');
 const chai = require('chai');
 const stdin = require('mock-stdin').stdin();
 
-// For some strange reason the stdout buffer prints each char in a line using mock-stdin.
+// For some strange reason the stdin is mixing with stdout when using mock-stdin with test-console.
 const normalizeLines = (lines) => {
-  let waitForEOL = false;
-  let temp = [];
   const output = [];
-
   for (const line of lines) {
-    if (waitForEOL) {
-      if (line === os.EOL) {
-        waitForEOL = false;
-      }
-      continue;
-    }
-
+    if (line.length === 1) continue;
     if (line === os.EOL) continue;
-
-    if (temp.length) {
-      output.push(temp.join(''));
-      temp = [];
-    }
-
-    if (line.length === 1) {
-      waitForEOL = true;
-      continue;
-    }
 
     output.push(line);
   }
@@ -49,7 +30,7 @@ before(() => {
 
 describe('node-texas-holdem', () => {
 
-  it('should inform 3 players and get results', async () => {
+  it('should inform 4 players and get results', async () => {
     const inspect = stdout.inspect();
 
     program();
@@ -80,11 +61,13 @@ describe('node-texas-holdem', () => {
 
     process.nextTick(() => stdin.send(`n${os.EOL}`));
 
-    await delay(50);
+    await delay(200);
 
     inspect.restore();
 
     const output = normalizeLines(inspect.output);
+
+    console.log(output);
 
     output.should.be.an('array').to.have.lengthOf(11);
     output[0].should.be.a('string').equals(`Insert community cards:${os.EOL}`);
