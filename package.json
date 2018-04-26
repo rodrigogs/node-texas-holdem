@@ -1,0 +1,23 @@
+{
+  "name": "node-texas-holdem",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node bin/run",
+    "lint": "eslint . --ext .js",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "mocha": "^5.1.0",
+    "mock-stdin": "^0.3.1",
+    "nyc": "^11.6.0",
+    "test-console": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "RULES": {
+    "COMMUNITY_CARDS": 5,
+    "HAND_CARDS": 2,
+    "MIN_PLAYERS": 2,
+    "MAX_PLAYERS": 10
+  },
+  "CARD_TYPES": {
+    "FACES": {
+      "2": {
+        "label": "2",
+        "value": 2
+      },
+      "3": {
+        "label": "3",
+        "value": 3
+      },
+      "4": {
+        "label": "4",
+        "value": 4
+      },
+      "5": {
+        "label": "5",
+        "value": 5
+      },
+      "6": {
+        "label": "6",
+        "value": 6
+      },
+      "7": {
+        "label": "7",
+        "value": 7
+      },
+      "8": {
+        "label": "8",
+        "value": 8
+      },
+      "9": {
+        "label": "9",
+        "value": 9
+      },
+      "T": {
+        "label": "10",
+        "value": 10
+      },
+      "J": {
+        "label": "Jack",
+        "value": 11
+      },
+      "Q": {
+        "label": "Queen",
+        "value": 12
+      },
+      "K": {
+        "label": "King",
+        "value": 13
+      },
+      "A": {
+        "label": "Ace",
+        "value": 1
+      }
+    },
+    "SUITS": {
+      "S": "Spades",
+      "H": "Hearts",
+      "D": "Diamonds",
+      "C": "Clubs"
+    }
+  }
+}
